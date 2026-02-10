@@ -1,0 +1,55 @@
+{
+  "K": 10,
+  "slots": [
+    {
+      "slot_id": "S01",
+      "name": "clean_bed",
+      "definition": "Evidence of the cleanliness of the bed"
+    },
+    {
+      "slot_id": "S02",
+      "name": "location_perfect",
+      "definition": "Evidence of the ideal location of the property"
+    },
+    {
+      "slot_id": "S03",
+      "name": "friendly_host",
+      "definition": "Evidence of the host's friendliness"
+    },
+    {
+      "slot_id": "S04",
+      "name": "central_location",
+      "definition": "Evidence of the property being centrally located"
+    },
+    {
+      "slot_id": "S05",
+      "name": "seating_area",
+      "definition": "Evidence of available seating area"
+    },
+    {
+      "slot_id": "S06",
+      "name": "near_shops",
+      "definition": "Evidence of proximity to shops and restaurants"
+    },
+    {
+      "slot_id": "S07",
+      "name": "private_bathroom",
+      "definition": "Evidence of having a private bathroom"
+    },
+    {
+      "slot_id": "S08",
+      "name": "responsive_host",
+      "definition": "Evidence of the host's responsiveness"
+    },
+    {
+      "slot_id": "S09",
+      "name": "cozy_apartment",
+      "definition": "Evidence of the apartment being cozy"
+    },
+    {
+      "slot_id": "S10",
+      "name": "open_floor_plan",
+      "definition": "Evidence of an open floor plan design"
+    }
+  ]
+}
