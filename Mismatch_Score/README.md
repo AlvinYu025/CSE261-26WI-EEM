@@ -15,7 +15,7 @@
 - Both models are fitted on the **full dataset** (no train/test split), as the regressors serve as projection functions rather than generalization models — the fitted values themselves are the signal of interest
 - Computes `mismatch_proxy` for every item in **both** spaces:
 
-$$\text{mismatch\_proxy}_i = \hat{y}_i^{\text{desc}} - \hat{y}_i^{\text{rev}}$$
+$$\text{mismatch-proxy}_i = \hat{y}_i^{\text{desc}} - \hat{y}_i^{\text{rev}}$$
 
 where $\hat{y}^{\text{desc}}$ and $\hat{y}^{\text{rev}}$ are the rating predictions from the description and review regressors respectively.
 
