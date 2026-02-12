@@ -1,6 +1,6 @@
 # Step 3: *Define Mismatch Score*
 
-**`mismatch_proxy_score.py`** computes the **rating-anchored mismatch proxy** for both embedding spaces (GloVe baseline and 10-d LLM semantic space), and additionally computes dimension-level delta metrics exclusively for the 10-d space.
+**`mismatch_proxy_score.py`** computes the **rating-anchored mismatch proxy** for both embedding spaces (GloVe baseline and 10-d LLM semantic space), and additionally computes **dimension-level delta metrics** exclusively for the 10-d space.
 
 ---
 
