@@ -467,6 +467,8 @@ def main():
         "max_length": args.max_length,
         "val_ratio": args.val_ratio,
         "seed": args.seed,
+        "target": "both",
+        "out_dim": args.K,
         "train_samples": len(train_ds),
         "eval_samples": len(val_ds),
         "teacher_csv": args.train_csv,

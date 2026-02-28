@@ -21,6 +21,10 @@ def str_to_array(s):
 # Compute mismatch_proxy via dual-supervision regression
 # --------------------------
 def compute_mismatch(df, desc_emb_cols, rev_emb_cols, rating_col, output_csv):
+    out_dir = os.path.dirname(output_csv)
+    if out_dir != "":
+        os.makedirs(out_dir, exist_ok=True)
+
     # Convert string embedding to array if single column
     if len(desc_emb_cols) == 1:
         desc_emb_array = df[desc_emb_cols[0]].apply(str_to_array)
@@ -90,29 +94,30 @@ def extract_top_examples(df, row_id_col, output_csv):
 # Main function
 # --------------------------
 def main():
+    dataset = "ny"      # ny / amsterdam
     # --------------------------
     # 1. GloVe baseline
     # --------------------------
-    baseline_path = "../Baseline/airbnb_glove_embeddings.csv"
+    baseline_path = f"../Baseline/airbnb_glove_embeddings-{dataset}.csv"
     df_baseline = pd.read_csv(baseline_path)
     desc_emb_col = ['desc_emb']
     rev_emb_col  = ['review_emb']
     rating_col   = 'rating'
-    output_baseline_csv = "baseline_mismatch_score.csv"
+    output_baseline_csv = f"{dataset}/baseline_mismatch_score.csv"
 
     df_baseline = compute_mismatch(df_baseline, desc_emb_col, rev_emb_col, rating_col, output_baseline_csv)
-    extract_top_examples(df_baseline, row_id_col="review_id", output_csv="baseline_mismatch_top10.csv")
+    extract_top_examples(df_baseline, row_id_col="review_id", output_csv=f"{dataset}/baseline_mismatch_top10.csv")
 
     # --------------------------
     # 2. 10-d student embedding
     # --------------------------
-    student_path = "../Space_Formation_Embedding_Extraction/student_scores_13k.csv"
+    student_path = "../Space_Formation_Embedding_Extraction/student_scores_ny.csv"
     df_student = pd.read_csv(student_path)
 
     desc_emb_cols = [f"desc_S{str(i).zfill(2)}_score" for i in range(1, 11)]
     rev_emb_cols  = [f"rev_S{str(i).zfill(2)}_score" for i in range(1, 11)]
     rating_col    = 'rating'
-    output_student_csv = "llm_mismatch_score.csv"
+    output_student_csv = f"{dataset}/llm_mismatch_score.csv"
 
     df_student = compute_mismatch(df_student, desc_emb_cols, rev_emb_cols, rating_col, output_student_csv)
 
@@ -121,7 +126,7 @@ def main():
     df_student.to_csv(output_student_csv, index=False, encoding="utf-8-sig")
     print(f"Updated CSV with delta_k and aggregates saved to {output_student_csv}")
 
-    extract_top_examples(df_student, row_id_col="row_idx", output_csv="llm_mismatch_top10.csv")
+    extract_top_examples(df_student, row_id_col="row_idx", output_csv=f"{dataset}/llm_mismatch_top10.csv")
 
 if __name__ == "__main__":
     main()
