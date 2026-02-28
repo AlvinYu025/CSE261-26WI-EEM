@@ -94,7 +94,7 @@ def extract_top_examples(df, row_id_col, output_csv):
 # Main function
 # --------------------------
 def main():
-    dataset = "ny"      # ny / amsterdam
+    dataset = "ny"          # ny / amsterdam
     # --------------------------
     # 1. GloVe baseline
     # --------------------------
@@ -111,7 +111,7 @@ def main():
     # --------------------------
     # 2. 10-d student embedding
     # --------------------------
-    student_path = "../Space_Formation_Embedding_Extraction/student_scores_ny.csv"
+    student_path = f"../Space_Formation_Embedding_Extraction/student_scores_{dataset}.csv"
     df_student = pd.read_csv(student_path)
 
     desc_emb_cols = [f"desc_S{str(i).zfill(2)}_score" for i in range(1, 11)]
