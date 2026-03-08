@@ -423,6 +423,7 @@ def run_one_target(
         "n": len(work),
         "classes": int(y.nunique()),
         "acc_base": base["accuracy"],
+        "acc_glove": (baseline["accuracy"] if baseline is not None else np.nan),
         "acc_full": full["accuracy"],
         "delta_acc": full["accuracy"] - base["accuracy"],
         "macro_f1_base": base["macro_f1"],
@@ -431,8 +432,15 @@ def run_one_target(
         "delta_macro_f1": full["macro_f1"] - base["macro_f1"],
         "macro_f1_naive": (naive["macro_f1"] if naive is not None else np.nan),
         "weighted_f1_base": base["weighted_f1"],
+        "weighted_f1_glove": (baseline["weighted_f1"] if baseline is not None else np.nan),
         "weighted_f1_full": full["weighted_f1"],
         "delta_weighted_f1": full["weighted_f1"] - base["weighted_f1"],
+        "delta_macro_f1_glove_vs_base": (
+            baseline["macro_f1"] - base["macro_f1"] if baseline is not None else np.nan
+        ),
+        "delta_macro_f1_custom_vs_glove": (
+            full["macro_f1"] - baseline["macro_f1"] if baseline is not None else np.nan
+        ),
     }
 
 
@@ -751,11 +759,15 @@ def main():
                         "n",
                         "classes",
                         "acc_base",
+                        "acc_glove",
                         "acc_full",
                         "delta_acc",
                         "macro_f1_base",
+                        "macro_f1_glove",
                         "macro_f1_full",
                         "delta_macro_f1",
+                        "delta_macro_f1_glove_vs_base",
+                        "delta_macro_f1_custom_vs_glove",
                     ]
                 ].to_string(index=False, float_format=lambda x: f"{x:.4f}")
             )
@@ -819,3 +831,45 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# results:
+
+# USE NY ONLY as I only have the listing.csv for NY at that time
+
+# Merged listing rows: 274
+# Unique listing_id: 274
+# Min reviews filter: n_reviews > 1
+# GloVe mismatch: Mismatch_Score\ny\baseline_mismatch_score.csv | loaded=True
+
+# Target: joint_superhost_rating  (binning=median, classes=4, n=270)
+# Class distribution:
+#   class 0: 28 (10.37%)
+#   class 1: 85 (31.48%)
+#   class 2: 124 (45.93%)
+#   class 3: 33 (12.22%)
+# TF-IDF only                     acc=0.7059 macro_f1=0.5620 weighted_f1=0.6730
+# TF-IDF + customized_mismatch    acc=0.7353 macro_f1=0.5882 weighted_f1=0.7054
+# TF-IDF + glove_mismatch         acc=0.7059 macro_f1=0.5336 weighted_f1=0.6698
+# Delta (full - base)             acc=+0.0294 macro_f1=+0.0261 weighted_f1=+0.0324
+# Delta (glove - base)            acc=+0.0000 macro_f1=-0.0284 weighted_f1=-0.0032
+# Delta (custom - glove)          acc=+0.0294 macro_f1=+0.0546 weighted_f1=+0.0356
+# Naive(host+rating) only         acc=1.0000 macro_f1=1.0000 weighted_f1=1.0000
+# [WARN] Naive(host+rating) overlaps with target definition; interpret as upper-bound style reference.
+
+# === Classification Summary (sorted by delta_macro_f1) ===
+#                 target   n  classes  acc_base  acc_glove  acc_full  delta_acc  macro_f1_base  macro_f1_glove  macro_f1_full  delta_macro_f1  delta_macro_f1_glove_vs_base  delta_macro_f1_custom_vs_glove
+# joint_superhost_rating 270        4    0.7059     0.7059    0.7353     0.0294         0.5620          0.5336         0.5882          0.0261                       -0.0284                     
+#      0.0546
+
+# [Joint regression target] built from: host_price_log + user_rating (z-score average)
+
+# [Regression] Target: joint_regression_host_price_log_user_rating (n=274)
+# TF-IDF only                  MAE=0.2927 RMSE=0.4201 R2=0.6597
+# TF-IDF + glove_mismatch      MAE=0.3274 RMSE=0.4420 R2=0.6232
+# TF-IDF + customized_mismatch MAE=0.2806 RMSE=0.3876 R2=0.7102
+# Delta(custom - base)         dMAE=-0.0122 dRMSE=-0.0324 dR2=+0.0505
+# Delta(custom - glove)        dMAE=-0.0468 dRMSE=-0.0543 dR2=+0.0869
+
+# === Regression Summary (sorted by delta_r2_custom_base) ===
+#                                      target   n  r2_base  r2_glove  r2_custom  delta_r2_custom_base  delta_r2_custom_glove
+# joint_regression_host_price_log_user_rating 274   0.6597    0.6232     0.7102                0.0505                 0.0869

@@ -8,7 +8,7 @@
 ## 1) `ny_joint_classification_regression.py`
 ### Why
 这个脚本是主实验入口。目的不是只跑一个指标，而是在同一套 NY 数据上同时检查：
-1. 分类任务中 `mismatch` 是否有稳定增益。
+1. 分类任务中 `mismatch` 是否优于或至少补充 baseline（GloVe 路线）信号。
 2. 回归任务中 `mismatch` 是否优于或至少补充 baseline（GloVe 路线）信号。
 
 如果某个 target 无法和 expectation-experience（预期-体验）机制对齐，或结果不稳定，就不作为主结论目标。

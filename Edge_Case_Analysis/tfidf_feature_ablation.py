@@ -246,3 +246,71 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# results:
+
+# NY
+# TF-IDF only                          acc=0.5717 macro_f1=0.5226 weighted_f1=0.5642
+# TF-IDF + mismatch_proxy              acc=0.5735 macro_f1=0.5239 weighted_f1=0.5662
+# TF-IDF + mabs                        acc=0.5757 macro_f1=0.5260 weighted_f1=0.5679
+# TF-IDF + mover                       acc=0.5710 macro_f1=0.5221 weighted_f1=0.5638
+# TF-IDF + munder                      acc=0.5765 macro_f1=0.5263 weighted_f1=0.5688
+# TF-IDF + price                       acc=0.5776 macro_f1=0.5254 weighted_f1=0.5702
+# TF-IDF + availability_30             acc=0.5905 macro_f1=0.5435 weighted_f1=0.5834
+# TF-IDF + availability_60             acc=0.5990 macro_f1=0.5485 weighted_f1=0.5921
+# TF-IDF + neighborhood                acc=0.6226 macro_f1=0.5804 weighted_f1=0.6180
+# TF-IDF + review_scores_all           acc=0.7593 macro_f1=0.7119 weighted_f1=0.7522
+
+
+# AM
+# TF-IDF only                          acc=0.5098 macro_f1=0.5013 weighted_f1=0.5073
+# TF-IDF + mismatch_proxy              acc=0.5095 macro_f1=0.5012 weighted_f1=0.5071
+# TF-IDF + mabs                        acc=0.5098 macro_f1=0.5013 weighted_f1=0.5073
+# TF-IDF + mover                       acc=0.5100 macro_f1=0.5016 weighted_f1=0.5075
+# TF-IDF + munder                      acc=0.5108 macro_f1=0.5026 weighted_f1=0.5084
+# TF-IDF + price                       acc=0.5108 macro_f1=0.5024 weighted_f1=0.5084
+# TF-IDF + availability_30             acc=0.5128 macro_f1=0.5046 weighted_f1=0.5102
+# TF-IDF + availability_60             acc=0.5135 macro_f1=0.5051 weighted_f1=0.5109
+# TF-IDF + neighborhood                acc=0.5185 macro_f1=0.5109 weighted_f1=0.5163
+# TF-IDF + review_scores_all           acc=0.6985 macro_f1=0.6928 weighted_f1=0.6919
+
+# === Ranked by macro_f1 ===
+#                      model  accuracy  macro_f1  weighted_f1  delta_acc_vs_base  delta_macro_f1_vs_base  delta_weighted_f1_vs_base
+# TF-IDF + review_scores_all    0.6985    0.6928       0.6919             0.1887                  0.1915                     0.1846
+#      TF-IDF + neighborhood    0.5185    0.5109       0.5163             0.0087                  0.0096                     0.0091
+#   TF-IDF + availability_60    0.5135    0.5051       0.5109             0.0037                  0.0038                     0.0037
+#   TF-IDF + availability_30    0.5128    0.5046       0.5102             0.0030                  0.0032                     0.0029
+#            TF-IDF + munder    0.5108    0.5026       0.5084             0.0011                  0.0013                     0.0011
+#             TF-IDF + price    0.5108    0.5024       0.5084             0.0011                  0.0011                     0.0011
+#             TF-IDF + mover    0.5100    0.5016       0.5075             0.0002                  0.0003                     0.0003
+#                TF-IDF only    0.5098    0.5013       0.5073             0.0000                  0.0000                     0.0000
+#              TF-IDF + mabs    0.5098    0.5013       0.5073             0.0000                 -0.0000                    -0.0000
+#    TF-IDF + mismatch_proxy    0.5095    0.5012       0.5071            -0.0002                 -0.0001                    -0.0002
+
+
+# MO
+# TF-IDF only                          acc=0.3851 macro_f1=0.3846 weighted_f1=0.3824
+# TF-IDF + mismatch_proxy              acc=0.3867 macro_f1=0.3860 weighted_f1=0.3839
+# TF-IDF + mabs                        acc=0.3853 macro_f1=0.3849 weighted_f1=0.3827
+# TF-IDF + mover                       acc=0.3863 macro_f1=0.3858 weighted_f1=0.3836
+# TF-IDF + munder                      acc=0.3861 macro_f1=0.3855 weighted_f1=0.3833
+# TF-IDF + price                       acc=0.3883 macro_f1=0.3876 weighted_f1=0.3853
+# TF-IDF + availability_30             acc=0.3897 macro_f1=0.3891 weighted_f1=0.3867
+# TF-IDF + availability_60             acc=0.3890 macro_f1=0.3882 weighted_f1=0.3857
+# TF-IDF + neighborhood                acc=0.3961 macro_f1=0.3971 weighted_f1=0.3943
+# TF-IDF + review_scores_all           acc=0.5996 macro_f1=0.5895 weighted_f1=0.5898
+
+# === Ranked by macro_f1 ===
+#                      model  accuracy  macro_f1  weighted_f1  delta_acc_vs_base  delta_macro_f1_vs_base  delta_weighted_f1_vs_base
+# TF-IDF + review_scores_all    0.5996    0.5895       0.5898             0.2145                 
+#  0.2049                     0.2074
+#      TF-IDF + neighborhood    0.3961    0.3971       0.3943             0.0110                 
+#  0.0125                     0.0118
+#   TF-IDF + availability_30    0.3897    0.3891       0.3867             0.0047                  0.0045                     0.0043        
+#   TF-IDF + availability_60    0.3890    0.3882       0.3857             0.0039                  0.0036                     0.0033        
+#             TF-IDF + price    0.3883    0.3876       0.3853             0.0032                  0.0030                     0.0029        
+#    TF-IDF + mismatch_proxy    0.3867    0.3860       0.3839             0.0016                  0.0014                     0.0015        
+#             TF-IDF + mover    0.3863    0.3858       0.3836             0.0013                  0.0012                     0.0012        
+#            TF-IDF + munder    0.3861    0.3855       0.3833             0.0010                  0.0008                     0.0009        
+#              TF-IDF + mabs    0.3853    0.3849       0.3827             0.0002                  0.0003                     0.0003        
+#                TF-IDF only    0.3851    0.3846       0.3824             0.0000                  0.0000                     0.0000   
