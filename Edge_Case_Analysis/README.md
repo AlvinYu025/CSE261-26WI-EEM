@@ -1,4 +1,4 @@
-# README_ADDED
+# Step 4: Define Mismatch Score
 
 ## Overall Goal
 The core objective of this newly added and refactored code is to validate the effectiveness of `mismatch` features, particularly their incremental value across different tasks.
