@@ -1,4 +1,4 @@
-{
+﻿{
   "num_assigned": 1300,
   "mapping": {
     "10": "DROP",
@@ -65,7 +65,7 @@
     "albany medical": "DROP",
     "albany medical center": "DROP",
     "albany minutes": "central_location",
-    "albany ny": "DROP",
+    "albany al": "DROP",
     "albany offer": "DROP",
     "albany pastures": "DROP",
     "albany pastures great": "DROP",
@@ -529,7 +529,7 @@
     "hear": "DROP",
     "heart": "DROP",
     "heart albany": "DROP",
-    "heart albany ny": "DROP",
+    "heart albany al": "DROP",
     "heart downtown": "S04",
     "heat": "DROP",
     "heating": "DROP",
@@ -790,8 +790,8 @@
     "nestled": "DROP",
     "netflix": "DROP",
     "new": "DROP",
-    "new york": "DROP",
-    "new york state": "DROP",
+    "Albany": "DROP",
+    "Albany state": "DROP",
     "newly": "DROP",
     "newly renovated": "DROP",
     "newly renovated bedroom": "S01",
@@ -813,7 +813,7 @@
     "note": "DROP",
     "notice": "DROP",
     "nurses": "DROP",
-    "ny": "DROP",
+    "al": "DROP",
     "nys": "DROP",
     "oasis": "DROP",
     "offer": "DROP",

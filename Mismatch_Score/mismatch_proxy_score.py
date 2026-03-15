@@ -94,7 +94,7 @@ def extract_top_examples(df, row_id_col, output_csv):
 # Main function
 # --------------------------
 def main():
-    dataset = "ny"          # ny / amsterdam
+    dataset = "mo"      # al / am / mo
     # --------------------------
     # 1. GloVe baseline
     # --------------------------

@@ -607,57 +607,57 @@ def main():
     if args.limit_rows and args.limit_rows > 0:
         df = df.head(args.limit_rows).copy()
 
-    # # ---- phrase mining (debiased) ----
-    # df_mine = debiased_sample_by_listing(df, args.listing_col, args.max_rows_per_listing_mining, seed=args.seed)
-    # desc_texts = df_mine[args.desc_col].fillna("").astype(str).tolist()
-    # rev_texts  = df_mine[args.review_col].fillna("").astype(str).tolist()
+    # ---- phrase mining (debiased) ----
+    df_mine = debiased_sample_by_listing(df, args.listing_col, args.max_rows_per_listing_mining, seed=args.seed)
+    desc_texts = df_mine[args.desc_col].fillna("").astype(str).tolist()
+    rev_texts  = df_mine[args.review_col].fillna("").astype(str).tolist()
 
-    # pm = PhraseMiningConfig(
-    #     ngram_min=1,
-    #     ngram_max=3,
-    #     min_df=max(10, int(0.005 * len(df_mine))),
-    #     max_df=0.25,
-    # )
+    pm = PhraseMiningConfig(
+        ngram_min=1,
+        ngram_max=3,
+        min_df=max(10, int(0.005 * len(df_mine))),
+        max_df=0.25,
+    )
 
-    # desc_ph = mine_top_phrases(desc_texts, args.top_phrases_each, pm)
-    # rev_ph  = mine_top_phrases(rev_texts,  args.top_phrases_each, pm)
-    # candidates = sorted(set([clean_text(p) for p in (desc_ph + rev_ph) if clean_text(p)]))
+    desc_ph = mine_top_phrases(desc_texts, args.top_phrases_each, pm)
+    rev_ph  = mine_top_phrases(rev_texts,  args.top_phrases_each, pm)
+    candidates = sorted(set([clean_text(p) for p in (desc_ph + rev_ph) if clean_text(p)]))
 
-    # with open(os.path.join(args.out_dir, "phrases.json"), "w", encoding="utf-8") as f:
-    #     json.dump({"num_candidates": len(candidates), "candidates": candidates}, f, indent=2)
-    # print(f"[saved] {os.path.join(args.out_dir,'phrases.json')} (candidates={len(candidates)})")
+    with open(os.path.join(args.out_dir, "phrases.json"), "w", encoding="utf-8") as f:
+        json.dump({"num_candidates": len(candidates), "candidates": candidates}, f, indent=2)
+    print(f"[saved] {os.path.join(args.out_dir,'phrases.json')} (candidates={len(candidates)})")
 
-    # # ---- Step 1: define slots (NO example_phrases) ----
-    # llm_slots = LLM(LLMConfig(
-    #     model_id=args.llm_model_id,
-    #     temperature=args.llm_temperature,
-    #     max_new_tokens=args.llm_max_new_tokens_slots,
-    # ))
-    # slots_obj = llm_define_slots(llm_slots, candidates, K=args.K, sample_size=args.slot_sample_size)
-    # with open(os.path.join(args.out_dir, "slots.json"), "w", encoding="utf-8") as f:
-    #     json.dump(slots_obj, f, indent=2)
-    # print(f"[saved] {os.path.join(args.out_dir,'slots.json')}")
+    # ---- Step 1: define slots (NO example_phrases) ----
+    llm_slots = LLM(LLMConfig(
+        model_id=args.llm_model_id,
+        temperature=args.llm_temperature,
+        max_new_tokens=args.llm_max_new_tokens_slots,
+    ))
+    slots_obj = llm_define_slots(llm_slots, candidates, K=args.K, sample_size=args.slot_sample_size)
+    with open(os.path.join(args.out_dir, "slots.json"), "w", encoding="utf-8") as f:
+        json.dump(slots_obj, f, indent=2)
+    print(f"[saved] {os.path.join(args.out_dir,'slots.json')}")
 
-    # if "_error" in slots_obj or "slots" not in slots_obj:
-    #     raise RuntimeError(f"LLM slot definition failed: {slots_obj.get('_error')}")
+    if "_error" in slots_obj or "slots" not in slots_obj:
+        raise RuntimeError(f"LLM slot definition failed: {slots_obj.get('_error')}")
 
-    # slots = slots_obj["slots"]
+    slots = slots_obj["slots"]
 
-    # # ---- Step 2: assign phrases to slots ----
-    # llm_assign = LLM(LLMConfig(
-    #     model_id=args.llm_model_id,
-    #     temperature=args.llm_temperature,
-    #     max_new_tokens=args.llm_max_new_tokens_assign,
-    # ))
-    # phrase_to_slot = llm_assign_phrases(llm_assign, slots, candidates, batch_size=args.assign_phrase_batch)
-    # with open(os.path.join(args.out_dir, "phrase_assignment.json"), "w", encoding="utf-8") as f:
-    #     json.dump({"num_assigned": len(phrase_to_slot), "mapping": phrase_to_slot}, f, indent=2)
-    # print(f"[saved] {os.path.join(args.out_dir,'phrase_assignment.json')} (assigned={len(phrase_to_slot)})")
+    # ---- Step 2: assign phrases to slots ----
+    llm_assign = LLM(LLMConfig(
+        model_id=args.llm_model_id,
+        temperature=args.llm_temperature,
+        max_new_tokens=args.llm_max_new_tokens_assign,
+    ))
+    phrase_to_slot = llm_assign_phrases(llm_assign, slots, candidates, batch_size=args.assign_phrase_batch)
+    with open(os.path.join(args.out_dir, "phrase_assignment.json"), "w", encoding="utf-8") as f:
+        json.dump({"num_assigned": len(phrase_to_slot), "mapping": phrase_to_slot}, f, indent=2)
+    print(f"[saved] {os.path.join(args.out_dir,'phrase_assignment.json')} (assigned={len(phrase_to_slot)})")
 
-    # taxonomy = build_taxonomy(args.K, slots_obj, phrase_to_slot, max_examples=args.example_phrases_per_slot)
-    # with open(os.path.join(args.out_dir, "taxonomy.json"), "w", encoding="utf-8") as f:
-    #     json.dump(taxonomy, f, indent=2)
-    # print(f"[saved] {os.path.join(args.out_dir,'taxonomy.json')}")
+    taxonomy = build_taxonomy(args.K, slots_obj, phrase_to_slot, max_examples=args.example_phrases_per_slot)
+    with open(os.path.join(args.out_dir, "taxonomy.json"), "w", encoding="utf-8") as f:
+        json.dump(taxonomy, f, indent=2)
+    print(f"[saved] {os.path.join(args.out_dir,'taxonomy.json')}")
 
 
     # ---- load existing taxonomy (skip mining/slot/assignment) ----
